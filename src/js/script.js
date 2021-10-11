@@ -11,7 +11,8 @@
       panel: '.books-list'
     },
     panelBook: {
-      bookCover: '#book__image'
+      bookCover: '#book__image',
+      bookCoverId: '.book__image[data-id="'
     }, 
     filterForm: {
       filters: '.filters'
@@ -84,24 +85,27 @@
       const thisBook = this;
       
       thisBook.booksList.addEventListener('dblclick', function(event){
+        const offsetParent = event.target.offsetParent;
         event.preventDefault();
-          
-        if(event.target.offsetParent.classList.contains(classNames.panelBook.favoriteBook)){
-          const index = favoriteBooks.indexOf(event.target.offsetParent.dataset.id);
+                  
+        if(offsetParent.classList.contains(classNames.panelBook.favoriteBook)){
+          const index = favoriteBooks.indexOf(offsetParent.dataset.id);
           favoriteBooks.splice(index, index + 1);
         } else {
-          favoriteBooks.push(event.target.offsetParent.dataset.id);
+          favoriteBooks.push(offsetParent.dataset.id);
         }
 
-        event.target.offsetParent.classList.toggle(classNames.panelBook.favoriteBook);
+        offsetParent.classList.toggle(classNames.panelBook.favoriteBook);
       });
 
       thisBook.form.addEventListener('click', function(event){
-        if(event.target.tagName == 'INPUT' && event.target.type == 'checkbox' && event.target.name == 'filter'){
-          if(event.target.checked){
-            filters.push(event.target.value);
+        const eventTarget = event.target;
+
+        if(eventTarget.tagName == 'INPUT' && eventTarget.type == 'checkbox' && eventTarget.name == 'filter'){
+          if(eventTarget.checked){
+            filters.push(eventTarget.value);
           } else {
-            const index = filters.indexOf(event.target.value);
+            const index = filters.indexOf(eventTarget.value);
             filters.splice(index, index + 1);
           }
         }
@@ -122,9 +126,9 @@
         }
 
         if(shouldBeHidden){
-          document.querySelector('.book__image[data-id="' + book.id + '"]').classList.toggle(classNames.panelBook.hiddenBook);
+          document.querySelector(select.panelBook.bookCoverId + book.id + '"]').classList.toggle(classNames.panelBook.hiddenBook);
         } else {
-          document.querySelector('.book__image[data-id="' + book.id + '"]').classList.remove(classNames.panelBook.hiddenBook);
+          document.querySelector(select.panelBook.bookCoverId + book.id + '"]').classList.remove(classNames.panelBook.hiddenBook);
         }
       }
     }
